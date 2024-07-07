@@ -23,7 +23,7 @@ jobs:
         run: bun install
 
       - name: Create Release
-        run: bun build ./manifest_script.ts --compile --outfile=manifest_generator
+        run: bun build ./manifest_script.ts --compile --outfile=manifest_generator_v${{ github.ref }}
 
       - name: Create Release
         id: create_release

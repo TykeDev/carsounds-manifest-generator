@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Get the version
         id: get_version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: echo "TAG=${GITHUB_REF:10}" >> "$GITHUB_ENV"
   
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
         run: bun install
 
       - name: Create Release
-        run: bun build ./manifest_script.ts --compile --outfile=manifest_generator_v${{ env.RELEASE_VERSION }}
+        run: bun build ./manifest_script.ts --compile --outfile=manifest_generator_v${{  $TAG }}"
 
       - name: Create Release
         id: create_release
@@ -36,8 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release v${{ env.RELEASE_VERSION }}
-          body: Release v${{ env.RELEASE_VERSION }}
+          release_name: Release v${{  $TAG }}
+          body: Release v${{  $TAG }}
           draft: false
           prerelease: false
 
@@ -47,6 +47,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./manifest_generator_v${{ env.RELEASE_VERSION }}.exe
-          asset_name: manifest_generator_v${{ env.RELEASE_VERSION }}.exe
+          asset_path: ./manifest_generator_v${{  $TAG }}.exe
+          asset_name: manifest_generator_v${{  $TAG }}.exe
           asset_content_type: application/octet-stream

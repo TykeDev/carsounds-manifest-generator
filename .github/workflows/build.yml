@@ -13,7 +13,10 @@ jobs:
     steps:
       - name: Get the version
         id: get_version
-        run: echo "TAG=${GITHUB_REF:10}" >> "$GITHUB_ENV"
+        run: echo "TAG=${GITHUB_REF#refs/*/}" >> "$GITHUB_ENV"
+
+      - name: Print the version
+        run: echo $TAG
   
       - name: Checkout code
         uses: actions/checkout@v2

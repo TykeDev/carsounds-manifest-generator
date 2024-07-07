@@ -21,7 +21,6 @@ jobs:
       - name: Instal Dependencies
         run: bun install
       - name: Create Release
-        id: create_release
         run: bun build ./manifest_script.ts --compile --outfile=manifest_generator
       - name: Release
         uses: actions/create-release@v1

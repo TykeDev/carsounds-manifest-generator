@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} is running action!
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   build:

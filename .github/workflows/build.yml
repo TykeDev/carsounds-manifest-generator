@@ -1,5 +1,5 @@
 name: Executable Build
-run-name: ${{ github.actor }} is running action
+run-name: ${{ github.actor }} is running action!
 
 on:
   push:

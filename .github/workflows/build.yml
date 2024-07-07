@@ -18,8 +18,7 @@ jobs:
           bun-version: 1.1.12
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Instal Dependencies
-        run: bun install
+      - run: bun install
       - name: Create Release
         run: bun build ./manifest_script.ts --compile --outfile=manifest_generator
       - name: Release

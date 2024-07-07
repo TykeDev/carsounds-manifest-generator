@@ -14,7 +14,7 @@ jobs:
       - name: Get the version
         id: get_version
         run: |
-          echo "TAG=${GITHUB_REF#refs/*/}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "TAG=${GITHUB_REF:10}" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Print the version
         run: echo $TAG

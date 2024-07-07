@@ -13,12 +13,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Installing Bun
-      - uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.1.12
       - name: Checkout code
         uses: actions/checkout@v2
-      - run: bun install
+      - name: Install Dependencies
+        run: bun install
       - name: Create Release
         run: bun build ./manifest_script.ts --compile --outfile=manifest_generator
       - name: Release

@@ -11,6 +11,10 @@ jobs:
     name: Create Release
     runs-on: windows-latest
     steps:
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+  
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -23,7 +27,7 @@ jobs:
         run: bun install
 
       - name: Create Release
-        run: bun build ./manifest_script.ts --compile --outfile=manifest_generator_v${{ github.ref }}
+        run: bun build ./manifest_script.ts --compile --outfile=manifest_generator_v${{ steps.get_version.outputs.VERSION }}
 
       - name: Create Release
         id: create_release
@@ -32,8 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: Release ${{ github.ref }}
+          release_name: Release v${{ steps.get_version.outputs.VERSION }}
+          body: Release v${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
 

@@ -1,36 +1,48 @@
 name: Executable Build
-run-name: ${{ github.actor }} is running action.
+run-name: ${{ github.actor }} is running action
 
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*'
 
 jobs:
   build:
     name: Create Release
     runs-on: windows-latest
     steps:
-      - name: Installing Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.1.12
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Installing Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.1.12
+
       - name: Install Dependencies
         run: bun install
+
       - name: Create Release
         run: bun build ./manifest_script.ts --compile --outfile=manifest_generator
-      - name: Release
+
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: |
-            manifest_generator.exe
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./manifest_generator.exe
+          asset_name: manifest_generator.exe
+          asset_content_type: application/octet-stream

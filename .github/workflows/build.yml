@@ -1,4 +1,4 @@
-name: Executable Build
+name: Build Executable
 run-name: ${{ github.actor }} is running action!
 
 on:

@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: Get the version
         id: get_version
-        run: echo "${{ github.ref }}" -Replace "refs/tags/" "" |
-          echo "TAG=${{ github.ref }} -Replace "refs/tags/" "" " |
+        run:
+          echo "TAG=${{ github.ref }}".Replace("refs/tags/", "") |
           Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Print the version

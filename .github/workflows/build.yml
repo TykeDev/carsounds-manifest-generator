@@ -14,6 +14,9 @@ jobs:
       - name: Get the version
         id: get_version
         run: |
+          echo ${GITHUB_REF} |
+          echo $GITHUB_REF.Replace("refs/tags/", "") |
+          echo ${GITHUB_REF.Replace("refs/tags/", "")} |
           echo "TAG=${GITHUB_REF.Replace("refs/tags/", "")}" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Print the version
